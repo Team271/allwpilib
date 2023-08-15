@@ -16,7 +16,7 @@ import edu.wpi.first.util.sendable.SendableRegistry;
  * Implements a PID control loop whose setpoint is constrained by a trapezoid profile. Users should
  * call reset() when they first start running the controller to avoid unwanted behavior.
  */
-public class ProfiledPIDController implements Sendable {
+public class ProfiledPIDController implements Sendable, AutoCloseable {
   private static int instances;
 
   private PIDController m_controller;
@@ -56,6 +56,11 @@ public class ProfiledPIDController implements Sendable {
 
     SendableRegistry.add(this, "ProfiledPIDController", instances);
     MathSharedStore.reportUsage(MathUsageId.kController_ProfiledPIDController, instances);
+  }
+
+  @Override
+  public void close() {
+    SendableRegistry.remove(this);
   }
 
   /**

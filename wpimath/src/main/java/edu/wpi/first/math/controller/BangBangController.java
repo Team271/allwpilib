@@ -21,7 +21,7 @@ import edu.wpi.first.util.sendable.SendableRegistry;
  * hazardous. Always ensure that your motor controllers are set to "coast" before attempting to
  * control them with a bang-bang controller.
  */
-public class BangBangController implements Sendable {
+public class BangBangController implements Sendable, AutoCloseable {
   private static int instances;
 
   private double m_tolerance;
@@ -55,6 +55,11 @@ public class BangBangController implements Sendable {
    */
   public BangBangController() {
     this(Double.POSITIVE_INFINITY);
+  }
+
+  @Override
+  public void close() {
+    SendableRegistry.remove(this);
   }
 
   /**
